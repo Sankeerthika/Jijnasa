@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class JijnasaApplication {
 
     public static void main(String[] args) {
-        // This line loads the .env file into system properties
-        Dotenv dotenv = Dotenv.configure().load();
+        // Load .env file if it exists, otherwise ignore (useful for production/Railway)
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
         
         SpringApplication.run(JijnasaApplication.class, args);
