@@ -1,0 +1,37 @@
+# Node.js / React
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Java / Spring Boot
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/.env
+backend/data/
+backend/bin/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.factorypath
+backend/.springBeans
+
+# H2 Database files
+*.mv.db
+*.trace.db
