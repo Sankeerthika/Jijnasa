@@ -21,7 +21,9 @@ Your backend is ready for Railway. Here's how to deploy:
 1.  **Railway Project**: Use the same project or a new one.
 2.  **Service**: Add a new service from your GitHub repository.
 3.  **Root Directory**: Set the root directory to `frontend`.
-4.  **Environment Variables**:
+4.  **Build Command**: Ensure it is set to `npm run build`.
+5.  **Start Command**: Ensure it is set to `npm start` (I have added this to your package.json).
+6.  **Environment Variables**:
     - `VITE_API_URL`: The URL of your deployed backend + `/api` (e.g., `https://jijnasa-backend.up.railway.app/api`)
 
 ---
