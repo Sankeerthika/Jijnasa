@@ -11,7 +11,7 @@
     "build": "vite build",
     "start": "serve -s dist -l $PORT",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "serve -s dist -l $PORT"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
