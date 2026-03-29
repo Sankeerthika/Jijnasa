@@ -1,0 +1,2 @@
+[start]
+command = "serve -s dist -l $PORT"
