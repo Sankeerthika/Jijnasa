@@ -28,6 +28,21 @@ Your backend is ready for Railway. Here's how to deploy:
 
 ---
 
-# Note on H2 Database
-Since you are using a file-based H2 database, Railway's ephemeral file system will delete your data every time the server restarts.
-**Recommendation**: Add a **PostgreSQL** database in Railway and update `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` accordingly for a permanent database.
+# Note on Database (SQL)
+Since you are using a file-based H2 database by default, Railway's ephemeral file system will delete your data every time the server restarts. 
+
+**Recommendation: Use a real SQL Database (MySQL or PostgreSQL)**
+
+1.  **Add Database**: In your Railway project, click **"New"** -> **"Database"** -> **"MySQL"** (or PostgreSQL).
+2.  **Connect**: Railway will provide connection variables. Update your Backend service variables:
+    - **MySQL Example**:
+        - `DB_URL`: `jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}`
+        - `DB_USERNAME`: `${MYSQLUSER}`
+        - `DB_PASSWORD`: `${MYSQLPASSWORD}`
+    - **PostgreSQL Example**:
+        - `DB_URL`: `jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}`
+        - `DB_USERNAME`: `${PGUSER}`
+        - `DB_PASSWORD`: `${PGPASSWORD}`
+
+Spring Boot will automatically detect the database type from the URL and use the correct driver.
+
