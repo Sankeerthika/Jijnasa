@@ -12,11 +12,18 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // Split if multiple URLs are provided (e.g., local and production)
+        // Split and trim to handle spaces in comma-separated list
         String[] origins = frontendUrl.split(",");
+        for (int i = 0; i < origins.length; i++) {
+            origins[i] = origins[i].trim();
+            // Remove trailing slash if it exists
+            if (origins[i].endsWith("/")) {
+                origins[i] = origins[i].substring(0, origins[i].length() - 1);
+            }
+        }
         
         registry.addMapping("/**")
-            .allowedOriginPatterns(origins)
+            .allowedOrigins(origins)
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true);
