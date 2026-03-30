@@ -17,17 +17,22 @@ public class AuthService {
     private UserRepository userRepository;
 
     public UserDto registerUser(RegisterRequest registerRequest) {
-        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("Email is already in use!");
+        try {
+            if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+                throw new RuntimeException("Email is already in use!");
+            }
+
+            User user = new User();
+            user.setName(registerRequest.getName());
+            user.setEmail(registerRequest.getEmail());
+            user.setRole(registerRequest.getRole());
+
+            User savedUser = userRepository.save(user);
+            return new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error during registration: " + e.getMessage());
         }
-
-        User user = new User();
-        user.setName(registerRequest.getName());
-        user.setEmail(registerRequest.getEmail());
-        user.setRole(registerRequest.getRole());
-
-        User savedUser = userRepository.save(user);
-        return new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole());
     }
 
     // ADD THIS METHOD: Real Login Logic
