@@ -16,8 +16,8 @@ public class Answer {
 
     @ManyToOne
     private User faculty;
- // Inside Answer.java
-    @Column(columnDefinition = "TEXT") // This allows very long academic answers
+
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     // Getters and Setters

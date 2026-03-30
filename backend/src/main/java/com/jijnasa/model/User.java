@@ -15,6 +15,8 @@ public class User {
     private String email;
     
     private String role;
+    private String university;
+    private String subjects;
 
     // Getters
     public Long getId() {
@@ -33,6 +35,14 @@ public class User {
         return role;
     }
 
+    public String getUniversity() {
+        return university;
+    }
+
+    public String getSubjects() {
+        return subjects;
+    }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -48,5 +58,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public void setSubjects(String subjects) {
+        this.subjects = subjects;
     }
 }
