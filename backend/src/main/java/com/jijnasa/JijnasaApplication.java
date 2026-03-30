@@ -30,6 +30,7 @@ public class JijnasaApplication {
         if (System.getenv("FRONTEND_URL") != null) System.setProperty("FRONTEND_URL", System.getenv("FRONTEND_URL"));
         
         if (dbUrl != null && (dbUrl.startsWith("jdbc:postgresql://") || dbUrl.startsWith("postgresql://") || dbUrl.startsWith("postgres://")) && dbUrl.contains("@")) {
+            System.out.println("DEBUG: Detected URI-style database URL, starting parsing...");
             try {
                 // If it starts with postgresql:// or postgres://, prefix with jdbc: for parsing
                 String parseUrl = dbUrl;
@@ -66,15 +67,20 @@ public class JijnasaApplication {
                     System.setProperty("spring.datasource.username", creds[0]);
                     System.setProperty("spring.datasource.password", creds[1]);
                     
-                    System.out.println("Configured database connection from URI (redacted host: " + host + ")");
+                    System.out.println("SUCCESS: Configured database connection for host: " + host);
+                } else {
+                    System.err.println("ERROR: Database URI missing user:password info");
                 }
             } catch (Exception e) {
-                System.err.println("Failed to parse database URI: " + e.getMessage());
+                System.err.println("CRITICAL ERROR: Failed to parse database URI: " + e.getMessage());
+                e.printStackTrace();
             }
-        } else if (dbUrl != null) {
-            // If it's a standard URL, still set the spring property
-            System.setProperty("spring.datasource.url", dbUrl);
-            System.setProperty("DB_URL", dbUrl);
+        } else {
+            System.out.println("DEBUG: Using standard JDBC URL: " + dbUrl);
+            if (dbUrl != null) {
+                System.setProperty("spring.datasource.url", dbUrl);
+                System.setProperty("DB_URL", dbUrl);
+            }
         }
         
         SpringApplication.run(JijnasaApplication.class, args);
