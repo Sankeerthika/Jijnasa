@@ -9,15 +9,12 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('scheduler')) {
-              return 'vendor-react';
-            }
-            if (id.includes('lucide-react')) {
-              return 'vendor-icons';
-            }
+            // Keep heavy chart libraries separate
             if (id.includes('recharts') || id.includes('d3')) {
               return 'vendor-charts';
             }
+            // Put everything else in node_modules into one vendor chunk
+            // This avoids circular dependencies between React and other libraries
             return 'vendor';
           }
         }
