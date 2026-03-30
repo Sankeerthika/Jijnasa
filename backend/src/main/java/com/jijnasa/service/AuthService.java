@@ -30,7 +30,7 @@ public class AuthService {
             user.setSubjects(registerRequest.getSubjects());
 
             User savedUser = userRepository.save(user);
-            return new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole());
+            return new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole(), savedUser.getUniversity(), savedUser.getSubjects());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error during registration: " + e.getMessage());
