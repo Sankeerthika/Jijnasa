@@ -62,12 +62,16 @@ public class JijnasaApplication {
                         newJdbcUrl += "?" + query;
                     }
                     
+                    // Set all properties explicitly to bypass auto-detection issues
                     System.setProperty("DB_URL", newJdbcUrl);
                     System.setProperty("spring.datasource.url", newJdbcUrl);
                     System.setProperty("spring.datasource.username", creds[0]);
                     System.setProperty("spring.datasource.password", creds[1]);
+                    System.setProperty("spring.datasource.driver-class-name", "org.postgresql.Driver");
+                    System.setProperty("spring.jpa.database-platform", "org.hibernate.dialect.PostgreSQLDialect");
+                    System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
                     
-                    System.out.println("SUCCESS: Configured database connection for host: " + host);
+                    System.out.println("SUCCESS: Configured PostgreSQL for host: " + host);
                 } else {
                     System.err.println("ERROR: Database URI missing user:password info");
                 }
@@ -80,6 +84,11 @@ public class JijnasaApplication {
             if (dbUrl != null) {
                 System.setProperty("spring.datasource.url", dbUrl);
                 System.setProperty("DB_URL", dbUrl);
+                
+                // If it looks like postgres, force the dialect just in case
+                if (dbUrl.contains("postgresql")) {
+                    System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+                }
             }
         }
         
