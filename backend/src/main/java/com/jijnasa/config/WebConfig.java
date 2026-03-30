@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${frontend.url:http://localhost:5173}")
+    @Value("${frontend.url:http://localhost:5173,https://jijnasa.vercel.app}")
     private String frontendUrl;
 
     @Override
@@ -15,8 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
         // Split if multiple URLs are provided (e.g., local and production)
         String[] origins = frontendUrl.split(",");
         
-        registry.addMapping("/api/**")
-            .allowedOrigins(origins)
+        registry.addMapping("/**")
+            .allowedOriginPatterns(origins)
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true);
