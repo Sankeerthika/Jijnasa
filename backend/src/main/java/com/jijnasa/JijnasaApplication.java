@@ -16,9 +16,6 @@ public class JijnasaApplication {
         String dbUrl = System.getenv("DB_URL");
         if (dbUrl == null) {
             dbUrl = System.getenv("DATABASE_URL");
-            if (dbUrl != null) {
-                System.setProperty("DB_URL", dbUrl);
-            }
         }
         if (dbUrl == null) {
             dbUrl = System.getProperty("DB_URL");
@@ -32,12 +29,14 @@ public class JijnasaApplication {
         if (System.getenv("GEMINI_URL") != null) System.setProperty("GEMINI_URL", System.getenv("GEMINI_URL"));
         if (System.getenv("FRONTEND_URL") != null) System.setProperty("FRONTEND_URL", System.getenv("FRONTEND_URL"));
         
-        if (dbUrl != null && (dbUrl.startsWith("jdbc:postgresql://") || dbUrl.startsWith("postgresql://")) && dbUrl.contains("@")) {
+        if (dbUrl != null && (dbUrl.startsWith("jdbc:postgresql://") || dbUrl.startsWith("postgresql://") || dbUrl.startsWith("postgres://")) && dbUrl.contains("@")) {
             try {
-                // If it starts with postgresql://, prefix with jdbc: for parsing
+                // If it starts with postgresql:// or postgres://, prefix with jdbc: for parsing
                 String parseUrl = dbUrl;
                 if (dbUrl.startsWith("postgresql://")) {
                     parseUrl = "jdbc:" + dbUrl;
+                } else if (dbUrl.startsWith("postgres://")) {
+                    parseUrl = "jdbc:postgresql://" + dbUrl.substring(11);
                 }
                 
                 // Extract credentials from the URL (jdbc:postgresql://user:password@host:port/db)
@@ -63,10 +62,19 @@ public class JijnasaApplication {
                     }
                     
                     System.setProperty("DB_URL", newJdbcUrl);
+                    System.setProperty("spring.datasource.url", newJdbcUrl);
+                    System.setProperty("spring.datasource.username", creds[0]);
+                    System.setProperty("spring.datasource.password", creds[1]);
+                    
+                    System.out.println("Configured database connection from URI (redacted host: " + host + ")");
                 }
             } catch (Exception e) {
-                // Ignore parsing errors and fallback to original URL
+                System.err.println("Failed to parse database URI: " + e.getMessage());
             }
+        } else if (dbUrl != null) {
+            // If it's a standard URL, still set the spring property
+            System.setProperty("spring.datasource.url", dbUrl);
+            System.setProperty("DB_URL", dbUrl);
         }
         
         SpringApplication.run(JijnasaApplication.class, args);
