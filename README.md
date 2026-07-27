@@ -103,4 +103,4 @@ doubt-tracking-system/
 ---
 
 ## 🤝 Contribution
-Developed with ❤️ by **Sankeerthika** and the **Jijnasa Team**.
+Developed with ❤️ by **Sankeerthika** .
